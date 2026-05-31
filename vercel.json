@@ -1,0 +1,31 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "regions": ["cdg1"],
+  "headers": [
+    {
+      "source": "/site/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, s-maxage=60, stale-while-revalidate=300" }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "(?<slug>[^.]+)\\.vitrinelab\\.com"
+        }
+      ],
+      "destination": "/site/:slug/:path*"
+    }
+  ],
+  "wildcard": [
+    {
+      "domain": "*.vitrinelab.com",
+      "value": "cname.vercel-dns.com"
+    }
+  ]
+}
