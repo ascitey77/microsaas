@@ -6,6 +6,7 @@ import type { EditableSection } from "@/types/sections";
 import { PLAN_LIMITS } from "@/types/plans";
 import type { PlanType } from "@/types/database";
 
+export const dynamic = "force-dynamic";
 export const revalidate = 60;
 
 interface SitePageProps {

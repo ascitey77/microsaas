@@ -7,6 +7,8 @@ import {
 import type { EditableSection, SiteEditorData } from "@/types/sections";
 import type { PlanType } from "@/types/database";
 
+export const dynamic = "force-dynamic";
+
 interface EditorPageProps {
   params: Promise<{ siteId: string }>;
 }

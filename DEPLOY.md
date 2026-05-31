@@ -1,5 +1,29 @@
 # Publier VitrineLab — accessible 24h/24
 
+**Code GitHub :** https://github.com/ascitey77/microsaas
+
+## Déploiement en 3 clics (recommandé)
+
+1. Ouvrez **[vercel.com/new](https://vercel.com/new)** → **Import** le dépôt `ascitey77/microsaas`
+2. **Environment Variables** : copiez toutes les clés de `.env.example` (Supabase + Stripe minimum pour démarrer)
+3. **Deploy** → URL publique immédiate : `https://microsaas.vercel.app` (ou nom de projet choisi)
+
+Le site reste en ligne **24h/24** (infrastructure serverless Vercel, pas d’arrêt nocturne).
+
+### Variables minimales pour le premier déploiement
+
+| Variable | Exemple |
+|----------|---------|
+| `NEXT_PUBLIC_APP_URL` | `https://microsaas.vercel.app` (puis votre domaine) |
+| `NEXT_PUBLIC_APP_DOMAIN` | `vitrinelab.com` ou `microsaas.vercel.app` |
+| `NEXT_PUBLIC_SUPABASE_URL` | URL projet Supabase |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | clé anon |
+| `SUPABASE_SERVICE_ROLE_KEY` | service role (secret) |
+
+Sans Supabase, la landing s’affiche ; auth/dashboard nécessitent Supabase.
+
+---
+
 ## Option A — Domaine Vercel (gratuit, immédiat)
 
 1. Déployez sur Vercel (voir ci-dessous).

@@ -6,6 +6,8 @@ import { PLAN_LIMITS } from "@/types/plans";
 import { getSiteUrl } from "@/lib/utils";
 import type { PlanType } from "@/types/database";
 
+export const dynamic = "force-dynamic";
+
 export default async function DashboardPage(): Promise<JSX.Element> {
   const supabase = await createClient();
   const {
