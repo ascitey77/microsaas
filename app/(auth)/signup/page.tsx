@@ -5,7 +5,6 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
-import { slugify } from "@/lib/utils";
 
 const SECTORS = [
   { id: "restaurant", label: "Restaurant" },
@@ -47,57 +46,26 @@ export default function SignupPage(): JSX.Element {
   const handleCreateSite = async () => {
     setLoading(true);
     setError(null);
-    const supabase = createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) {
-      setError("Session expirée");
-      setLoading(false);
-      return;
-    }
-
-    const slug = slugify(businessName) || "mon-site";
-    const { data: site, error: siteError } = await supabase
-      .from("sites")
-      .insert({
-        user_id: user.id,
+    const res = await fetch("/api/onboarding/create-site", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
         name: businessName,
-        slug,
-        template_id: templateId,
-      })
-      .select("id")
-      .single();
-
-    if (siteError || !site) {
-      setError(siteError?.message ?? "Erreur création site");
-      setLoading(false);
-      return;
-    }
-
-    await supabase.from("themes").insert({
-      site_id: site.id,
-      primary_color: primaryColor,
+        templateId,
+        primaryColor,
+      }),
     });
 
-    const defaultSections = [
-      { type: "hero", order: 0 },
-      { type: "services", order: 1 },
-      { type: "testimonials", order: 2 },
-    ];
+    const data = (await res.json()) as { siteId?: string; error?: string };
 
-    for (const s of defaultSections) {
-      await supabase.from("sections").insert({
-        site_id: site.id,
-        type: s.type,
-        order: s.order,
-        content: {},
-        settings: {},
-      });
+    if (!res.ok || !data.siteId) {
+      setError(data.error ?? "Erreur création site");
+      setLoading(false);
+      return;
     }
 
     setLoading(false);
-    router.push(`/editor/${site.id}`);
+    router.push(`/editor/${data.siteId}`);
   };
 
   return (
